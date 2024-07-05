@@ -45,6 +45,23 @@ def handle_hello():
 
     return jsonify(response_body), 200
 
+#create api end points all planets one planet people one person
+@app.route("/people", methods =["GET"])
+def get_all_people(): 
+    all_people = People.query.all()
+    serialized_people  = [person.serialized() for person in all_people]
+    return jsonify(serialized_people), 200
+
+@app.route("/people<int:person_id>",methods=["PUT", "GET"])
+def get_one_person(person_id):
+    if request.method=="GET":
+        user1=People.query.get(person_id)
+        return jsonify(user1.serialized()),200
+    return "person not found",404
+
+
+
+
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))
